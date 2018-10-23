@@ -65,59 +65,61 @@ eg: |-- QC1        #对应3b)step one
 
 * **Step one - QC of raw data**
 
-{% tabs %}
-{% tab title="Input" %}
+**Input:**
+
 | data type | path |
 | :--- | :--- |
 | `raw data` | `/BioII/chenxupeng/student/raw_data/*.fastq` |
-{% endtab %}
 
-{% tab title="Software/Parameters" %}
+**Software/Parameters:**
+
 `fastqc`
 
 | `options` | function |
-| :---: | :---: |
+| :--- | :--- |
 | `-q --quiet` | Supress all progress messages on stdout and only report errors. |
 | `-o --outdir` | Create all output files in the specified output directory. |
 | `-h --help` | detailed introduction of options |
-{% endtab %}
 
-{% tab title="Output" %}
+**Output:**
+
 QC files
-{% endtab %}
-{% endtabs %}
+
+
 
 * **step two - cut adaptor & trim long read**
 
-{% tabs %}
-{% tab title="Input" %}
-| data type | path |
+**Input:**
+
+| data type | **path** |
 | :--- | :--- |
 | `raw data` | `/BioII/chenxupeng/student/raw_data/*.fastq` |
-{% endtab %}
 
-{% tab title="Software/Parameters" %}
+**Software/Parameters:**
+
 `cutadapt`: cutadapt removes adapter sequences from high-throughput sequencing reads.
 
 Usage: `cutadapt -a ADAPTER [options] [-o output.fastq] input.fastq`
 
 | `options with Parameter Setting` | function |
-| :---: | :---: |
+| :--- | :--- |
 | `-u -100` | remove last 100nt so that the first 50nt is kept |
 | `-q 30,30` | read quality need to be above 30 |
 | `-m 15` | reads less than 15nt are removed |
 | `-a AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC` | cut adapt |
 | `--trim-n` | trim N's on ends of reads. |
-{% endtab %}
 
-{% tab title="Output" %}
+**Output:**
+
 `*.fastq.trim`
-{% endtab %}
-{% endtabs %}
+
+
 
 * **step three - QC after Trim**
 
 除了输入文件是trim后的数据以外，过程与step one相同
+
+
 
 #### **3c\)** Clean rRNA reads 
 
