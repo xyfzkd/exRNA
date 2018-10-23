@@ -123,12 +123,12 @@ Usage: `cutadapt -a ADAPTER [options] [-o output.fastq] input.fastq`
 
 bowtie2可以将`.fastq`文件比对到rRNA index上从而得到**不含rRNA reads的`.fastq`文件以及map到rRNA index上的`.sam`文件**
 
-{% tabs %}
-{% tab title="Input" %}
-3b\)操作结束后的`*.fastq.trim`
-{% endtab %}
+**Input:**
 
-{% tab title="Software/Parameters" %}
+3b\)操作结束后的`*.fastq.trim`
+
+**Software/Parameters:** 
+
 bowtie2可以Clean rRNA reads得到不含rRNA reads的`.fastq`文件以及map到rRNA index上的`.sam`文件
 
 ```text
@@ -141,19 +141,18 @@ bowtie2 -p 4 [options] -x <bt2-idx> --un <address of unmapped reads> $input_file
 | `--norc` | do not align reverse-complement version of read |
 | `--no-unal` | suppress SAM records for unaligned reads |
 | `--un` _`<path to unmapped reads>`_ | store unmapped reads |
-| **`-x`** _**`<address of index>/rRNA`**_ | indexed genome/transcriptome |
+| **`-x`** _**`<path to index>/rRNA`**_ | indexed genome/transcriptome |
 | `-S` _`<path to output file>`_ | output file foramt as sam |
-| `-p <int>` | number of alignment threads to launch |
 
-对于那些map到rRNA index上的`.sam`文件，可以用`samtools`的`view`功能，具体可以敲入`samtools view -h`查看怎么转化
-{% endtab %}
+对于那些map到rRNA index上的`.sam`文件，可以用samtools的view功能转化为`.bam`文件，具体可以敲入`samtools view -h`查看怎么转化
 
-{% tab title="Output" %}
-不含rRNA reads的`.fastq`文件**`*.no_rRNA.fq`**
+**Output:**
+
+不含rRNA reads的`.fastq`文件`*.no_rRNA.fq`
 
 map到rRNA index上的`*.<rRNA>.sam`文件
-{% endtab %}
-{% endtabs %}
+
+
 
 #### 3d\) Mapping
 
@@ -161,12 +160,12 @@ map到rRNA index上的`*.<rRNA>.sam`文件
 
 只不过，3c\) 比对的index是rRNA，这里只需要 1）**把index替换成其他类型的index**，2）**将上一步比对得到的`*.no_<some type of RNA>.fq`作为input**，重复1）2），直至比对完所有类型至这样就可以得到各种RNA类型的比对结果。
 
-{% tabs %}
-{% tab title="Input" %}
-`*.no_<some type of RNA>.fastq`
-{% endtab %}
+**Input:**
 
-{% tab title="Software/Parameters" %}
+`*.no_<some type of RNA>.fastq`
+
+**Software/Parameters:**
+
 类似3c\)，只需修改index和input：
 
 ```text
@@ -175,24 +174,24 @@ bowtie2 -p 4 [options] -x <bt2-idx> --un <address of unmapped reads> $input_file
 
 | `Parameter Setting` |
 | :--- |
-| **`-x`** _**`<address of index>/`**_**`<some type of RNA>`** |
-| **`*.<RNA --un from the previous step>.fq`**   as `$input_file` |
-| **`-un`**_**`<address of output>/`**_**`*.no_<some type of RNA>.fq`** |
-| `-S` _**`<address of .sam file>/`**_**`<some type of RNA>.sam`** |
+| **`-x`** _**`<path to index>/`**_**`<some type of RNA>`** |
+| **`*.<RNA --un by the previous step>.fq`**   as `$input_file` |
+| **`-un`**_**`<path to output>/`**_**`*.no_<some type of RNA>.fq`** |
+| `-S` _**`<path to .sam file>/`**_**`<some type of RNA>.sam`** |
 
-对于那些map到某类型RNA index上的`.sam`文件，可以用`samtools`的`view`功能，具体可以敲入`samtools view -h`查看怎么转化
-{% endtab %}
+对于那些map到rRNA index上的`.sam`文件，可以用samtools的view功能转化为`.bam`文件，具体可以敲入`samtools view -h`查看怎么转化
 
-{% tab title="Output" %}
-不含**某类型**RNA reads的`.fastq`文件**`*.no_<some type of RNA>.fq`**
+**Output:**
+
+不含某类型RNA reads的`.fastq`文件**`*.no_<some type of RNA>.fq`**
 
 map到某类型RNA index上的`*.<some type of RNA>.sam`文件
-{% endtab %}
 
-{% tab title="Repeat" %}
-index文件夹下，有各种类型RNA的index，我们所要做的，就是把reads依次map到各种类型的RNA index上，推荐次序为，miRNA、piRNA、Y\_RNA、srpRNA、tRNA、snRNA、snoRNA、lncRNA、mRNA、tucp最后是hg38other（此步index为`hg38`不在index文件夹下需要注意）。
-{% endtab %}
-{% endtabs %}
+**Repeat:**
+
+index文件夹下，有各种类型RNA的index，我们所要做的，就是把reads依次map到各种类型的RNA index上，推荐次序为，miRNA、piRNA、Y\_RNA、srpRNA、tRNA、snRNA、snoRNA、lncRNA、mRNA、tucp最后是hg38other（此步index为`hg38`不在RNA\_index文件夹下需要注意）。
+
+\*\*\*\*
 
 #### 3e\) Sample QC
 
